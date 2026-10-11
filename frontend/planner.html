@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puja Hopper — Route Planner</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- Control Sidebar -->
+        <aside class="hopper-sidebar">
+            <div class="sidebar-top">
+                <a href="index.html" class="back-link">← Home</a>
+                <h1>🛕 Puja Hopper</h1>
+            </div>
+
+            <!-- MODE SELECTOR -->
+            <div class="mode-switch-container">
+                <button type="button" class="mode-tab-btn active" id="btn-mode-transit">
+                    📍 Mode 1: Transit Hubs
+                </button>
+                <button type="button" class="mode-tab-btn" id="btn-mode-pandals">
+                    🛕 Mode 2: Pandal-to-Pandal
+                </button>
+            </div>
+
+            <!-- MODE 1 CONTROLS -->
+            <div id="mode-transit-inputs" class="mode-input-section">
+                <div class="form-group">
+                    <div class="group-header">
+                        <label for="start-hub">📍 Start Point</label>
+                        <button type="button" id="locate-me-btn" class="text-action-btn">🎯 Use My GPS</button>
+                    </div>
+                    <select id="start-hub">
+                        <option value="howrah">Howrah Railway Station</option>
+                        <option value="sealdah">Sealdah Railway Station</option>
+                        <option value="sovabazar">Sovabazar Sutanuti Metro</option>
+                        <option value="esplanade">Esplanade Central Metro</option>
+                        <option value="kalighat">Kalighat Metro Station</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="end-hub">🏁 Destination / Exit Point</label>
+                    <select id="end-hub">
+                        <option value="kalighat">Kalighat Metro Station</option>
+                        <option value="esplanade">Esplanade Central Metro</option>
+                        <option value="howrah">Howrah Railway Station</option>
+                        <option value="sealdah">Sealdah Railway Station</option>
+                        <option value="sovabazar">Sovabazar Sutanuti Metro</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- MODE 2 CONTROLS -->
+            <div id="mode-pandal-inputs" class="mode-input-section hidden">
+                <div class="mode-hint">Direct pandal hop! Pick your starting pandal and destination pandal.</div>
+                <div class="form-group">
+                    <label for="first-pandal-select">🥇 1st Pandal (Entry Anchor)</label>
+                    <select id="first-pandal-select"></select>
+                </div>
+
+                <div class="form-group">
+                    <label for="last-pandal-select">🏁 Last Pandal (Exit Anchor)</label>
+                    <select id="last-pandal-select"></select>
+                </div>
+            </div>
+            <!-- Inside #mode-pandal-inputs in frontend/planner.html -->
+            <div id="mode-pandal-inputs" class="mode-input-section hidden">
+                <div class="mode-hint">Direct pandal hop! Pick your starting pandal or hop straight from your current live spot.</div>
+    
+                <div class="form-group">
+                    <div class="group-header">
+                        <label for="first-pandal-select">🥇 1st Pandal / Origin</label>
+                        <button type="button" id="locate-me-mode2-btn" class="text-action-btn">🎯 Start from GPS</button>
+                    </div>
+                    <select id="first-pandal-select"></select>
+                </div>
+                <div class="form-group">
+                    <label for="last-pandal-select">🏁 Last Pandal (Exit Anchor)</label>
+                    <select id="last-pandal-select"></select>
+                </div>
+            </div>
+
+            <!-- PANDAL DIRECTORY & ZONE FILTER -->
+            <div class="pandal-picker-block">
+                <div class="pandal-selector-header">
+                    <label>🛕 Pandals (<span id="selected-count">0</span> selected)</label>
+                    <div class="selector-actions">
+                        <button type="button" id="select-all-btn">All</button>
+                        <button type="button" id="clear-all-btn">Clear</button>
+                    </div>
+                </div>
+
+                <div class="zone-filter-scroll">
+                    <button type="button" class="zone-pill active" data-zone="all">All</button>
+                    <button type="button" class="zone-pill" data-zone="North">North</button>
+                    <button type="button" class="zone-pill" data-zone="Central">Central</button>
+                    <button type="button" class="zone-pill" data-zone="South">South</button>
+                    <button type="button" class="zone-pill" data-zone="East">Salt Lake/East</button>
+                    <button type="button" class="zone-pill" data-zone="Behala">Behala/SW</button>
+                </div>
+
+                <div id="pandal-checkbox-container" class="pandal-checkbox-list"></div>
+            </div>
+
+            <button id="calculate-route-btn" class="calculate-btn">🧭 Calculate Optimized Route</button>
+
+            <!-- ITINERARY OUTPUT -->
+            <section id="results-panel" class="results-panel hidden">
+                <h3>Hopper Itinerary</h3>
+                <div class="stats-summary" id="stats-summary"></div>
+                <ol class="timeline-list" id="timeline-list"></ol>
+            </section>
+        </aside>
+
+        <!-- Leaflet Map Container -->
+        <main id="map" class="map-view">
+            <button type="button" id="live-recenter-btn" class="floating-gps-btn" title="Track Live Location">
+                <span class="gps-icon">🎯</span>
+                <span class="gps-text">Live Track</span>
+            </button>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Master Pandal Dataset -->
+    <script src="pandals-data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

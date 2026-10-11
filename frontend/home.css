@@ -1,0 +1,159 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #fff;
+    background-color: #0d0404;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.hero-wrapper {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 25%, #4a0d0d 0%, #1c0505 60%, #0a0202 100%);
+    padding: 30px 20px;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(rgba(255, 215, 0, 0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+}
+
+.hero-card {
+    position: relative;
+    z-index: 2;
+    max-width: 780px;
+    width: 100%;
+    text-align: center;
+    background: rgba(28, 8, 8, 0.7);
+    border: 1px solid rgba(255, 215, 0, 0.25);
+    border-radius: 20px;
+    padding: 45px 35px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+}
+
+.badge {
+    display: inline-block;
+    background: rgba(255, 215, 0, 0.12);
+    color: #ffd700;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+}
+
+.brand-title {
+    font-family: 'Cinzel', serif;
+    font-size: 3.4rem;
+    font-weight: 900;
+    letter-spacing: 5px;
+    color: #fffaf5;
+    text-shadow: 0 4px 20px rgba(230, 57, 70, 0.5);
+    margin-bottom: 12px;
+}
+
+.tagline {
+    font-size: 1.05rem;
+    color: #e4cec2;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto 20px;
+}
+
+.developer-credit {
+    margin-bottom: 30px;
+}
+
+.developer-credit span {
+    font-size: 0.92rem;
+    color: #ffb88c;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 7px 18px;
+    border-radius: 8px;
+    border-left: 3px solid #ff7b00;
+    display: inline-block;
+}
+
+.modes-preview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 35px;
+    text-align: left;
+}
+
+.mode-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 18px;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.mode-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 215, 0, 0.4);
+}
+
+.mode-card .icon {
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+}
+
+.mode-card h3 {
+    font-size: 0.95rem;
+    color: #ffd700;
+    margin-bottom: 6px;
+}
+
+.mode-card p {
+    font-size: 0.82rem;
+    color: #d1c1b9;
+    line-height: 1.4;
+}
+
+.start-btn {
+    display: inline-block;
+    padding: 16px 42px;
+    background: linear-gradient(135deg, #b22222, #e63946);
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 40px;
+    box-shadow: 0 8px 25px rgba(230, 57, 70, 0.45);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(230, 57, 70, 0.65);
+}
+
+@media (max-width: 640px) {
+    .brand-title {
+        font-size: 2.3rem;
+        letter-spacing: 2px;
+    }
+    .modes-preview {
+        grid-template-columns: 1fr;
+    }
+    .hero-card {
+        padding: 30px 20px;
+    }
+}
