@@ -373,7 +373,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         resultsEl.scrollIntoView({ behavior: "smooth" });
     });
-    // --- Mobile Screen Switcher (List <-> Map) ---
+   // --- Mobile Screen Switcher (List <-> Map) ---
     const tabListBtn = document.getElementById("tab-list-btn");
     const tabMapBtn = document.getElementById("tab-map-btn");
     const sidebarPanel = document.getElementById("sidebar-panel");
@@ -381,18 +381,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function switchToMap() {
         if (window.innerWidth <= 860) {
-            sidebarPanel.classList.add("mobile-hidden");
-            mapElement.classList.remove("mobile-hidden");
+            sidebarPanel.classList.add("mobile-offscreen");
+            mapElement.classList.remove("mobile-offscreen");
             tabMapBtn.classList.add("active");
             tabListBtn.classList.remove("active");
-            map.invalidateSize();
+
+            // Recalculate dimensions so map renders fully
+            setTimeout(() => {
+                map.invalidateSize({ pan: false });
+                if (currentRouteLayer) {
+                    map.fitBounds(currentRouteLayer.getBounds(), { padding: [30, 30] });
+                }
+            }, 100);
         }
     }
 
     function switchToList() {
         if (window.innerWidth <= 860) {
-            mapElement.classList.add("mobile-hidden");
-            sidebarPanel.classList.remove("mobile-hidden");
+            mapElement.classList.add("mobile-offscreen");
+            sidebarPanel.classList.remove("mobile-offscreen");
             tabListBtn.classList.add("active");
             tabMapBtn.classList.remove("active");
         }
@@ -401,19 +408,26 @@ document.addEventListener("DOMContentLoaded", () => {
     tabMapBtn?.addEventListener("click", switchToMap);
     tabListBtn?.addEventListener("click", switchToList);
 
-    // Automatically switch to the map when route calculation finishes on mobile
-    const originalCalculate = document.getElementById("calculate-route-btn");
-    originalCalculate?.addEventListener("click", () => {
+    // Auto-switch to Map when Route Calculation completes on mobile
+    const calculateBtn = document.getElementById("calculate-route-btn");
+    calculateBtn?.addEventListener("click", () => {
         if (window.innerWidth <= 860) {
-            setTimeout(switchToMap, 400);
+            setTimeout(switchToMap, 300);
         }
     });
 
-    // Handle screen resize events
+    // Window Resize Hook (Desktop <-> Mobile)
     window.addEventListener("resize", () => {
         if (window.innerWidth > 860) {
-            sidebarPanel.classList.remove("mobile-hidden");
-            mapElement.classList.remove("mobile-hidden");
+            sidebarPanel.classList.remove("mobile-offscreen");
+            mapElement.classList.remove("mobile-offscreen");
+        } else {
+            // Keep active tab state on transition
+            if (tabMapBtn?.classList.contains("active")) {
+                switchToMap();
+            } else {
+                switchToList();
+            }
         }
         map.invalidateSize();
     });

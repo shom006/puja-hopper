@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Puja Hopper — Route Planner</title>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -13,20 +13,24 @@
 </head>
 <body>
 
+    <!-- MOBILE TOP SWITCHER BAR (Visible only on mobile screens) -->
+    <header class="mobile-top-bar">
+        <a href="index.html" class="mobile-home-btn">← Home</a>
+        <div class="mobile-view-toggle">
+            <button type="button" id="tab-list-btn" class="mobile-toggle-btn active">📋 List</button>
+            <button type="button" id="tab-map-btn" class="mobile-toggle-btn">🗺️ Map</button>
+        </div>
+    </header>
+
     <div class="app-layout">
-        <!-- Floating Mobile View Switcher -->
-        <nav class="mobile-view-toggle">
-            <button type="button" id="tab-list-btn" class="mobile-toggle-btn active">📋 Controls & List</button>
-            <button type="button" id="tab-map-btn" class="mobile-toggle-btn">🗺️ View Map</button>
-        </nav>
         <!-- Control Sidebar -->
-        <aside class="hopper-sidebar">
-            <div class="sidebar-top">
+        <aside id="sidebar-panel" class="hopper-sidebar">
+            <div class="sidebar-top desktop-only">
                 <a href="index.html" class="back-link">← Home</a>
                 <h1>🛕 Puja Hopper</h1>
             </div>
 
-            <!-- MODE SELECTOR -->
+            <!-- MODE SWITCHER -->
             <div class="mode-switch-container">
                 <button type="button" class="mode-tab-btn active" id="btn-mode-transit">
                     📍 Mode 1: Transit Hubs
@@ -66,21 +70,7 @@
 
             <!-- MODE 2 CONTROLS -->
             <div id="mode-pandal-inputs" class="mode-input-section hidden">
-                <div class="mode-hint">Direct pandal hop! Pick your starting pandal and destination pandal.</div>
-                <div class="form-group">
-                    <label for="first-pandal-select">🥇 1st Pandal (Entry Anchor)</label>
-                    <select id="first-pandal-select"></select>
-                </div>
-
-                <div class="form-group">
-                    <label for="last-pandal-select">🏁 Last Pandal (Exit Anchor)</label>
-                    <select id="last-pandal-select"></select>
-                </div>
-            </div>
-            <!-- Inside #mode-pandal-inputs in frontend/planner.html -->
-            <div id="mode-pandal-inputs" class="mode-input-section hidden">
-                <div class="mode-hint">Direct pandal hop! Pick your starting pandal or hop straight from your current live spot.</div>
-    
+                <div class="mode-hint">Direct pandal hop! Pick your starting pandal or start directly from your live GPS spot.</div>
                 <div class="form-group">
                     <div class="group-header">
                         <label for="first-pandal-select">🥇 1st Pandal / Origin</label>
@@ -88,6 +78,7 @@
                     </div>
                     <select id="first-pandal-select"></select>
                 </div>
+
                 <div class="form-group">
                     <label for="last-pandal-select">🏁 Last Pandal (Exit Anchor)</label>
                     <select id="last-pandal-select"></select>
@@ -125,11 +116,10 @@
                 <ol class="timeline-list" id="timeline-list"></ol>
             </section>
         </aside>
-        <!-- Map Container -->
-        <main id="map" class="map-view mobile-hidden"></main>
 
-        <!-- Leaflet Map Container -->
+        <!-- MAP CONTAINER -->
         <main id="map" class="map-view">
+            <!-- Dedicated Live Track Floating Action Button -->
             <button type="button" id="live-recenter-btn" class="floating-gps-btn" title="Track Live Location">
                 <span class="gps-icon">🎯</span>
                 <span class="gps-text">Live Track</span>
@@ -138,7 +128,6 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- Master Pandal Dataset -->
     <script src="pandals-data.js"></script>
     <script src="script.js"></script>
 </body>

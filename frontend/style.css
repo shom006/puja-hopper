@@ -7,27 +7,35 @@
 html, body {
     height: 100%;
     width: 100%;
+    margin: 0;
+    padding: 0;
     overflow: hidden;
     font-family: 'Plus Jakarta Sans', sans-serif;
     color: #271a17;
-    background-color: #ffffff; /* Eliminates black void */
+    background-color: #ffffff;
 }
 
-/* APP FULL VIEWPORT LAYOUT */
+/* TOP MOBILE NAVIGATION BAR (Hidden on Desktop) */
+.mobile-top-bar {
+    display: none;
+}
+
+/* MAIN VIEWPORT LAYOUT */
 .app-layout {
     display: flex;
+    flex-direction: row;
     height: 100vh;
-    height: 100dvh; /* Dynamic viewport for mobile mobile browsers */
+    height: 100dvh;
     width: 100vw;
-    background: #ffffff;
     overflow: hidden;
     position: relative;
 }
 
-/* SIDEBAR STYLING */
+/* SIDEBAR */
 .hopper-sidebar {
     width: 440px;
-    min-width: 380px;
+    min-width: 400px;
+    max-width: 460px;
     height: 100%;
     background: #ffffff;
     border-right: 1px solid #ebd9c8;
@@ -35,7 +43,8 @@ html, body {
     flex-direction: column;
     padding: 20px;
     overflow-y: auto;
-    z-index: 1000;
+    z-index: 10;
+    flex-shrink: 0;
 }
 
 .sidebar-top {
@@ -54,20 +63,14 @@ html, body {
     border-radius: 6px;
     background: #fdf2e9;
     border: 1px solid #f2d2ba;
-    transition: background 0.2s;
-}
-
-.back-link:hover {
-    background: #f7dfce;
 }
 
 .sidebar-top h1 {
     font-size: 1.35rem;
     color: #9d1b1b;
-    margin: 0;
 }
 
-/* MODE TOGGLE */
+/* MODE TOGGLES */
 .mode-switch-container {
     display: flex;
     gap: 6px;
@@ -106,7 +109,7 @@ html, body {
     border-radius: 4px;
 }
 
-/* FORMS */
+/* FORM ELEMENTS */
 .form-group {
     margin-bottom: 12px;
 }
@@ -279,25 +282,25 @@ html, body {
     line-height: 1.7;
 }
 
-/* MAP VIEW */
+/* MAP VIEW (Fills the entire remaining desktop width) */
 .map-view {
-    flex: 1;
-    height: 100%;
+    flex: 1 1 auto;
     width: 100%;
+    height: 100%;
     position: relative;
-    background: #e5e3df;
+    background: #f2efe9;
 }
 
-/* FLOATING CONTROLS ON MAP */
+/* FLOATING GPS TRACK BUTTON (Always separate in bottom right corner) */
 .floating-gps-btn {
     position: absolute;
     bottom: 24px;
-    right: 20px;
+    right: 24px;
     z-index: 1000;
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 16px;
+    padding: 11px 18px;
     background: #ffffff;
     color: #1a1a1a;
     border: 2px solid #9d1b1b;
@@ -314,39 +317,52 @@ html, body {
     border-color: #1b5e20;
 }
 
-/* MOBILE VIEW SWITCHER BUTTONS (Hidden on desktop) */
-.mobile-view-toggle {
-    display: none;
-}
-
-/* RESPONSIVE BREAKPOINT FOR MOBILE & TABLETS */
+/* =========================================================
+   RESPONSIVE DESIGN FOR SMARTPHONES (< 860px)
+   ========================================================= */
 @media (max-width: 860px) {
-    .app-layout {
-        flex-direction: column;
+    body {
+        overflow: hidden;
     }
 
-    /* Floating toggle between Map and List on mobile */
+    /* TOP MOBILE HEADER */
+    .mobile-top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 16px;
+        background: #9d1b1b;
+        height: 52px;
+        width: 100%;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        z-index: 10000;
+    }
+
+    .mobile-home-btn {
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.82rem;
+        background: rgba(255, 255, 255, 0.18);
+        padding: 5px 10px;
+        border-radius: 6px;
+    }
+
     .mobile-view-toggle {
         display: flex;
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 2000;
-        background: #9d1b1b;
-        border-radius: 30px;
-        padding: 4px;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+        background: rgba(0, 0, 0, 0.2);
+        padding: 3px;
+        border-radius: 20px;
     }
 
     .mobile-toggle-btn {
-        background: none;
+        background: transparent;
         border: none;
-        color: #f7dede;
-        padding: 8px 16px;
-        font-size: 0.85rem;
+        color: #ffdede;
+        padding: 6px 14px;
+        font-size: 0.82rem;
         font-weight: 700;
-        border-radius: 20px;
+        border-radius: 16px;
         cursor: pointer;
     }
 
@@ -355,26 +371,48 @@ html, body {
         color: #9d1b1b;
     }
 
-    .hopper-sidebar {
-        width: 100%;
-        min-width: 100%;
-        height: 100%;
-        border-right: none;
-        padding-bottom: 80px; /* space for toggle pill */
-    }
-
-    .map-view {
-        width: 100%;
-        height: 100%;
-    }
-
-    /* Controlled via JS for mobile tab switching */
-    .mobile-hidden {
+    .desktop-only {
         display: none !important;
     }
 
+    /* APP CONTAINER ON MOBILE */
+    .app-layout {
+        height: calc(100dvh - 52px);
+        width: 100vw;
+        position: relative;
+    }
+
+    .hopper-sidebar {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        height: 100%;
+        border-right: none;
+        padding: 16px;
+    }
+
+    .map-view {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    /* Use off-screen positioning instead of display:none so Leaflet doesn't break */
+    .mobile-offscreen {
+        visibility: hidden !important;
+        pointer-events: none !important;
+        position: absolute !important;
+        left: -9999px !important;
+    }
+
+    /* Live Track button on mobile sits comfortably in bottom corner without any overlap */
     .floating-gps-btn {
-        bottom: 76px; /* Position above toggle pill */
+        bottom: 20px;
         right: 16px;
+        padding: 10px 14px;
+        font-size: 0.8rem;
     }
 }
