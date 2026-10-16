@@ -14,6 +14,11 @@
 <body>
 
     <div class="app-layout">
+        <!-- Floating Mobile View Switcher -->
+        <nav class="mobile-view-toggle">
+            <button type="button" id="tab-list-btn" class="mobile-toggle-btn active">📋 Controls & List</button>
+            <button type="button" id="tab-map-btn" class="mobile-toggle-btn">🗺️ View Map</button>
+        </nav>
         <!-- Control Sidebar -->
         <aside class="hopper-sidebar">
             <div class="sidebar-top">
@@ -120,6 +125,8 @@
                 <ol class="timeline-list" id="timeline-list"></ol>
             </section>
         </aside>
+        <!-- Map Container -->
+        <main id="map" class="map-view mobile-hidden"></main>
 
         <!-- Leaflet Map Container -->
         <main id="map" class="map-view">

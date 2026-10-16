@@ -373,4 +373,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
         resultsEl.scrollIntoView({ behavior: "smooth" });
     });
+    // --- Mobile Screen Switcher (List <-> Map) ---
+    const tabListBtn = document.getElementById("tab-list-btn");
+    const tabMapBtn = document.getElementById("tab-map-btn");
+    const sidebarPanel = document.getElementById("sidebar-panel");
+    const mapElement = document.getElementById("map");
+
+    function switchToMap() {
+        if (window.innerWidth <= 860) {
+            sidebarPanel.classList.add("mobile-hidden");
+            mapElement.classList.remove("mobile-hidden");
+            tabMapBtn.classList.add("active");
+            tabListBtn.classList.remove("active");
+            map.invalidateSize();
+        }
+    }
+
+    function switchToList() {
+        if (window.innerWidth <= 860) {
+            mapElement.classList.add("mobile-hidden");
+            sidebarPanel.classList.remove("mobile-hidden");
+            tabListBtn.classList.add("active");
+            tabMapBtn.classList.remove("active");
+        }
+    }
+
+    tabMapBtn?.addEventListener("click", switchToMap);
+    tabListBtn?.addEventListener("click", switchToList);
+
+    // Automatically switch to the map when route calculation finishes on mobile
+    const originalCalculate = document.getElementById("calculate-route-btn");
+    originalCalculate?.addEventListener("click", () => {
+        if (window.innerWidth <= 860) {
+            setTimeout(switchToMap, 400);
+        }
+    });
+
+    // Handle screen resize events
+    window.addEventListener("resize", () => {
+        if (window.innerWidth > 860) {
+            sidebarPanel.classList.remove("mobile-hidden");
+            mapElement.classList.remove("mobile-hidden");
+        }
+        map.invalidateSize();
+    });
 });
